@@ -155,23 +155,4 @@ const body2 = {
   stock: 3
 }
 
-// const manager = new ProductManager('./product.json');
-
-// (async () => {
-//   const getAllProducts = await manager.getProducts();
-//   console.log('Todos los productos: ', getAllProducts);
-
-//   await manager.addProduct(body);
-//   await manager.addProduct(body2);
-
-//   const newGetAllProducts = await manager.getProducts();
-//   console.log('Todos los productos: ', newGetAllProducts);
-
-//   await manager.getProductById(1);
-
-//   await manager.updateProduct(1, bodyUpdate)
-
-//   await manager.deleteProduct(2)
-// })();
-
 module.exports = ProductManager;

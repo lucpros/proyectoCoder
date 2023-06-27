@@ -127,32 +127,4 @@ class ProductManager {
     }
 }
 
-
-const body = {
-    title: 'Camara de Seguridad',
-    description: 'Resolución de 2MP visión nocturna incluida blanca',
-    price: 17000,
-    thumbnail: '/.camara.png',
-    code: 'A6DF8',
-    stock: 4
-}
-
-const bodyUpdate = {
-  title: 'Camara de Seguridad',
-  description: 'Resolución de 2MP',
-  price: 16000,
-  thumbnail: './camara.png',
-  code: 'A6DF8',
-  stock: 2
-}
-
-const body2 = {
-  title: 'Joystick inalámbrico',
-  description: 'DualSense CFI-ZCT1 white y black',
-  price: 48000,
-  thumbnail: './joystick.png',
-  code: 'SFG8S4',
-  stock: 3
-}
-
 module.exports = ProductManager;

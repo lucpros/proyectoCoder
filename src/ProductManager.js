@@ -11,7 +11,7 @@ class ProductManager {
         const products = JSON.parse(productString);
         return products;
       } catch (err) {
-        return [];
+        return `No se encontraron productos, ${err}`;
       }
     }
     
@@ -22,9 +22,11 @@ class ProductManager {
             || !data.price
             || !data.thumbnail
             || !data.code
-            || !data.stock) {
+            || !data.stock
+            || !data.status
+            || !data.category) {
               console.log("Error: Campos incorrectos")
-              return
+              return "Error: Campos incorrectos"
         }
 
             try {
@@ -33,7 +35,7 @@ class ProductManager {
               
               if(codeExist != -1) {
                   console.log("El código pertenece a otro producto");
-                  return
+                  return "El código pertenece a otro producto"
               }
 
               const product = {
@@ -42,7 +44,9 @@ class ProductManager {
                 price: data.price,
                 thumbnail: data.thumbnail,
                 code: data.code,
-                stock: data.stock
+                stock: data.stock,
+                status: data.status,
+                category: data.category
               }
           
               product.id = products.length + 1
@@ -50,8 +54,10 @@ class ProductManager {
 
               await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
               console.log('Producto agregado correctamente', product)
+              return "Producto agregado correctamente"
             } catch(e) {
               console.log('Error al guardar el producto', e)
+              return `Error al guardar el producto, ${e}`
             }
     }
 
@@ -61,7 +67,7 @@ class ProductManager {
         const product = products.find((product) => product.id === id);
         if (!product) {
           console.log('No se encuentra producto por ID: ', id);
-          return
+          return `No se encuentra producto por ID: ${id}`
         }
         console.log('Producto encontrado por ID:', id)
         return product
@@ -78,7 +84,7 @@ class ProductManager {
     
             if (productIndex === -1) {
               console.log('No se encuentra producto a actualizar con ID:', id)
-              return
+              return `No se encuentra producto a actualizar con ID: ${id}`
             }
 
             if (!data.title 
@@ -86,23 +92,29 @@ class ProductManager {
               || !data.price
               || !data.thumbnail
               || !data.code
-              || !data.stock) {
+              || !data.stock
+              || !data.status
+              || !data.category) {
                 console.log("Error: Campos incorrectos, no se puede actualizar el producto con ID:", id)
-                return
+                return `Error: Campos incorrectos, no se puede actualizar el producto con ID: ${id}`
             }
     
             products[productIndex].title = data.title
             products[productIndex].description = data.description
             products[productIndex].price = data.price
-            products[productIndex].thumbnail = data.thumbnail
             products[productIndex].code = data.code
+            products[productIndex].thumbnail = data.thumbnail
             products[productIndex].stock = data.stock
+            products[productIndex].status = data.status
+            products[productIndex].category = data.category
     
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
             console.log('Producto actualizado correctamente con ID:', id, data)
+            return `Producto actualizado correctamente con ID: ${id}`
           }
           catch (e) {
             console.log('Error al actualizar el producto', e)
+            return `Error al actualizar el producto: ${e}`
           }
       }
 
@@ -113,16 +125,18 @@ class ProductManager {
   
           if (productIndex === -1) {
             console.log('No se encuentra producto a eliminar con ID:', id)
-            return
+            return `No se encuentra producto a eliminar con ID: ${id}`
           }
 
           products.splice(productIndex, 1)
   
           await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
           console.log('Producto eliminado con ID:', id)
+          return `Producto eliminado con ID: ${id}`
         }
         catch (e) {
           console.log('Error al eliminar el producto', e)
+          return `Error al eliminar el producto: ${e}`
         }
     }
 }

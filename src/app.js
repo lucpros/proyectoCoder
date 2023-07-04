@@ -1,35 +1,18 @@
 const express = require('express')
-const ProductManager = require('./ProductManager')
+
+const productRouter = require('./routers/productRouter')
 
 const app = express()
-const manager = new ProductManager('../product.json')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 
 app.get('/', (req, res) => {
     return res.send('Home')
 })
 
-app.get('/products', async (req, res) => {
-    const getAllProducts = await manager.getProducts()
-
-    const num = req.query.limit
-    if (!num) {
-        return res.send(getAllProducts)
-    } else {
-        const getLimitProducts = getAllProducts.slice(0, num)
-        return res.send(getLimitProducts)
-    }
-})
-
-app.get('/products/:pid', async (req, res) => {
-    const productId = parseInt(req.params.pid)
-
-    const getProductById = await manager.getProductById(productId)
-    
-    if (!getProductById) {
-        return res.send({"Error": `El producto con el ID ${productId} no existe`})
-    }
-    return res.send(getProductById)
-})
+app.use('/api/products', productRouter)
 
 
 app.listen(8080, () => {

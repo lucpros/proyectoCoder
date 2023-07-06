@@ -21,7 +21,6 @@ class CartManager {
     async addCart() {
       try {
         const carts = await this.getCarts()
-        console.log("obtiene carts: ", carts)
 
         const cart = {
             id: carts.length + 1,
@@ -31,7 +30,9 @@ class CartManager {
         carts.push(cart)
 
         await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
-        return `Cart creado correctamente ${cart}`
+
+        const cartJson = JSON.stringify(cart)
+        return `Cart creado correctamente: ${cartJson}`
 
       } catch(error) {
           return `Error al crear el cart, ${error}`
@@ -49,14 +50,19 @@ class CartManager {
         }
 
         const productPromises = cart.products.map( async (product) => {
+
           const productId = product.product
           console.log(`Productos encontrados del Cart con ID ${id}: ${productId}`)
+
           const productDetails = await managerProducts.getProductById(productId);
+
           return { product: productDetails, quantity: product.quantity };
         })
 
         const productById = await Promise.all(productPromises);
-        console.log(productById);
+
+        const cartJson = JSON.stringify(productById)
+        return cartJson
 
       } catch (e) {
         console.log('Error: ', e);
@@ -68,25 +74,32 @@ class CartManager {
       try {
         const carts = await this.getCarts();
         const cart = carts.find((cart) => cart.id === cartId);
+        const productExist = await managerProducts.getProductById(productId)
 
         if (!cart) {
-          console.log('No se encuentra cart por ID: ', cartId);
           return `No se encuentra cart por ID: ${cartId}`
+        }
+
+        if (!productExist) {
+          return `No se puede agregar el producto con ID: ${productId}, no existe`
         }
 
         const product = cart.products.find((item) => item.product === productId)
         
         if(!product) {
-          cart.products.push(productId)
+
+          cart.products.push({
+            product: productId, 
+            quantity: 1}
+          )
+
           await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
-          console.log(`Producto con ID ${productId} agregado al Cart con ID ${cartId}`)
           return `Producto con ID ${productId} agregado al Cart con ID ${cartId}`
         }
         
         const productQuantity = product.quantity += 1
-        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))+
-        console.log(`Producto con ID ${productId} agregado al Cart con ID ${cartId}, cantidad: ${productQuantity}`)
-        return `Producto con ID ${productId} agregado al Cart con ID ${cartId}, cantidad: ${productQuantity}`
+        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
+        return `Producto con ID ${productId} agregado al Cart con ID ${cartId}, cantidad: ${productQuantity} `
 
       } catch (e) {
         console.log('Error: ', e);
@@ -102,8 +115,8 @@ class CartManager {
 // (async () => {
 //   // const managerGetCarts = await manager.getCarts();
 //   // const managerAddCart = await manager.addCart();
-//   // const managerGetCartById = await manager.getCartById(1);
-//   const managerAddProductToCart = await manager.addProductToCart(2, 2);
+//   const managerGetCartById = await manager.getCartById(1);
+//   //const managerAddProductToCart = await manager.addProductToCart(1, 2);
 // })();
 
 module.exports = CartManager

@@ -13,6 +13,10 @@
       {
         "product": 7,
         "quantity": 3
+      },
+      {
+        "product": 2,
+        "quantity": 1
       }
     ]
   },

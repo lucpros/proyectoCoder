@@ -1,6 +1,7 @@
 const express = require('express')
 
 const productRouter = require('./routers/productRouter')
+const cartRouter = require('./routers/cartRouter')
 
 const app = express()
 
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRouter)
+app.use('/api/carts', productRouter)
 
 
 app.listen(8080, () => {

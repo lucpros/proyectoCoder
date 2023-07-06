@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRouter)
-app.use('/api/carts', productRouter)
+app.use('/api/carts', cartRouter)
 
 
 app.listen(8080, () => {

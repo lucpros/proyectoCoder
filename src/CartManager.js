@@ -96,12 +96,14 @@ class CartManager {
 }
   
 
-const manager = new CartManager('../cart.json');
+// const manager = new CartManager('../cart.json');
 
 
-(async () => {
-  // const managerGetCarts = await manager.getCarts();
-  // const managerAddCart = await manager.addCart();
-  // const managerGetCartById = await manager.getCartById(1);
-  const managerAddProductToCart = await manager.addProductToCart(2, 2);
-})();
+// (async () => {
+//   // const managerGetCarts = await manager.getCarts();
+//   // const managerAddCart = await manager.addCart();
+//   // const managerGetCartById = await manager.getCartById(1);
+//   const managerAddProductToCart = await manager.addProductToCart(2, 2);
+// })();
+
+module.exports = CartManager

@@ -8,7 +8,7 @@
     <th>Categoría</th>
   </tr>
   {{#each products}}
-    <tr>
+    <tr rowId="{{this.id}}">
       <td>{{this.id}}</td>
       <td>{{this.title}}</td>
       <td>{{this.price}}</td>
@@ -18,7 +18,7 @@
   {{/each}}
 </table>
 <form id="productForm">
-
+    <h3>AGREGAR PRODUCTO</h3>
     <label for="title" >Title:</label><input type="text" name="title"><br>
     <label for="description" >Description:</label><input type="text" name="description"><br>
     <label for="thumbnail" >Thumbnail:</label><input type="text" name="thumbnail"><br>
@@ -35,7 +35,12 @@
     <label for="category" >Category:</label><input type="text" name="category"><br>
 
     <input type="submit" value="Enviar">
-  </form>
+</form>
+<form id="productFormDelete">
+    <h3>ELIMINAR PRODUCTO</h3>
+    <label for="id" >INGRESAR ID DE PRODUCTO A ELIMINAR:</label><input type="text" name="id">
+    <input type="submit" value="Enviar">
+</form>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/products.js"></script>
@@ -71,6 +76,21 @@ productForm.addEventListener('submit', async (event) => {
     await axios.post('http://localhost:8080/api/products', productData);
     
     productForm.reset();
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+const productFormDelete = document.getElementById('productFormDelete');
+productFormDelete.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const idProduct = document.querySelector('input[name="id"]').value;
+
+  try {
+    await axios.delete(`http://localhost:8080/api/products/${idProduct}`);
+    
+    productFormDelete.reset();
   } catch (error) {
     console.error(error);
   }

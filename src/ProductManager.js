@@ -137,6 +137,7 @@ class ProductManager {
           products.splice(productIndex, 1)
   
           await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
+          this.io.emit('eliminarProducto', id.toString());
           console.log('Producto eliminado con ID:', id)
           return `Producto eliminado con ID: ${id}`
         }

@@ -19,3 +19,15 @@ socket.on('nuevoProducto', (data) => {
   table.innerHTML += productHTML
 
 })
+
+socket.on('eliminarProducto', (productId) => {
+  console.log('Nuevo cliente conectado. DELETE')
+
+  const table = document.getElementById('productos')
+  const row = table.querySelector(`tr[rowId="${parseInt(productId)}"]`)
+
+  if (row) {
+    row.remove()
+  }
+
+})

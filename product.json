@@ -113,5 +113,27 @@
     "status": true,
     "category": "clothes",
     "id": 11
+  },
+  {
+    "title": "jsa",
+    "description": "ajsoi",
+    "price": 234,
+    "thumbnail": "jasido",
+    "code": "234jio",
+    "stock": 3,
+    "status": "true",
+    "category": "asd",
+    "id": 12
+  },
+  {
+    "title": "qwd",
+    "description": "bid",
+    "price": 34,
+    "thumbnail": "buad",
+    "code": "342ub",
+    "stock": 3,
+    "status": "true",
+    "category": "ad",
+    "id": 13
   }
 ]

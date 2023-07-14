@@ -1,16 +1,14 @@
 const socket = io()
 
-console.log(socket)
-
 socket.on('nuevoProducto', (data) => {
+  console.log('Nuevo cliente conectado. POST')
   const product = JSON.parse(data)
 
   const productHTML = `
   <tr>
       <td>${product.id}</td>
-      <td>${product.name}</td>
+      <td>${product.title}</td>
       <td>${product.price}</td>
-      <td>${product.thumbnail}</td>
       <td>${product.stock}</td>
       <td>${product.category}</td>
   </tr>
@@ -18,6 +16,6 @@ socket.on('nuevoProducto', (data) => {
 
   const table = document.getElementById('productos')
 
-  table.append(productHTML)
+  table.innerHTML += productHTML
 
 })

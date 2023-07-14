@@ -1,10 +1,12 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
 const socketServer = require('./utils/io')
+const ProductManager = require('./ProductManager')
+
 
 const viewsRouter = require('./routers/viewsRouter')
 
-const productRouter = require('./routers/productRouter')
+const productRouter = require('./routers/productRouter');
 const cartRouter = require('./routers/cartRouter')
 
 const app = express()
@@ -22,19 +24,8 @@ const PORT = 8080
 const httpServer = app.listen(PORT, () => console.log(`Servidor Express escuchando en el puerto: ${PORT}`))
 
 const io = socketServer(httpServer)
+const manager = new ProductManager('../product.json', io)
 
-io.on('connection', socket => {
-    console.log('Nuevo cliente conectado')
-
-    // socket.on('message', data => {
-    //     console.log(data)
-    // })
-})
-
-app.use('/api/products', productRouter)
+app.use('/api/products', productRouter(manager))
 app.use('/', viewsRouter)
 app.use('/api/carts', cartRouter)
-
-// app.listen(8080, () => {
-//     console.log("Servidor Express escuchando en el puerto 8080")
-// })

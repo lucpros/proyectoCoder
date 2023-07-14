@@ -1,8 +1,9 @@
 const fs = require('fs')
 
 class ProductManager {
-    constructor(path) {
+    constructor(path, io) {
         this.path = path
+        this.io = io
     }
 
     async getProducts () {
@@ -53,6 +54,8 @@ class ProductManager {
               products.push(product)
 
               await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
+              this.io.emit('nuevoProducto', JSON.stringify(product))
+
               console.log('Producto agregado correctamente', product)
               return "Producto agregado correctamente"
             } catch(e) {

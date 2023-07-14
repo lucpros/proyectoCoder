@@ -17,6 +17,62 @@
     </tr>
   {{/each}}
 </table>
+<form id="productForm">
+
+    <label for="title" >Title:</label><input type="text" name="title"><br>
+    <label for="description" >Description:</label><input type="text" name="description"><br>
+    <label for="thumbnail" >Thumbnail:</label><input type="text" name="thumbnail"><br>
+    <label for="price" >Price:</label><input type="number" name="price"><br>
+    <label for="code" >Code:</label><input type="text" name="code"><br>
+    <label for="stock" >Stock:</label><input type="number" name="stock"><br>
+
+    <label for="status" >Status:</label>
+    <select name="status" id="status">
+      <option value="false">False</option>
+      <option value="true">True</option>
+    </select><br>
+    
+    <label for="category" >Category:</label><input type="text" name="category"><br>
+
+    <input type="submit" value="Enviar">
+  </form>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/products.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+const productForm = document.getElementById('productForm');
+productForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const title = document.querySelector('input[name="title"]').value;
+  const description = document.querySelector('input[name="description"]').value;
+  const thumbnail = document.querySelector('input[name="thumbnail"]').value;
+  const price = document.querySelector('input[name="price"]').value;
+  const code = document.querySelector('input[name="code"]').value;
+  const stock = document.querySelector('input[name="stock"]').value;
+  const status = document.querySelector('select[name="status"]').value;
+  const category = document.querySelector('input[name="category"]').value;
+
+  const productData = {
+    title,
+    description,
+    thumbnail,
+    price,
+    code,
+    stock,
+    status,
+    category
+  };
+
+  try {
+    await axios.post('http://localhost:8080/api/products', productData);
+    
+    productForm.reset();
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>

@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0000001a;
+    font-family: 'Lato', sans-serif;;
+}
+
+h1 {
+    color: #363636;
+    margin: 30px auto;
+    text-align: center;
+}
+
+table {
+    margin: auto;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+}
+
+th {
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+td {
+    letter-spacing: 1px;
+}
+
+.headers {
+    background-color: #fff159;
+    color: #363636;
+}
+
+tr {
+    border: 1px solid #f5f5f5;
+    background-color: #fff;;
+    color: #303030;
+}
+
+tr:nth-child(even) {
+    background-color: #fff;;
+    color: #303030;
+}
+
+.formsContainer {
+    display: flex;
+    margin: 40px auto;
+    justify-content: center;
+    background-color: #fff159;
+}
+
+form {
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    width: 28%;
+}
+
+h3 {
+    text-align: center;
+}
+
+input {
+    padding: 10px 7px;
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    color: #242222;
+}
+
+input:focus {
+    background-color: #c8cfda;
+}
+
+.btn {
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #3483fa;
+    color: #f5f5f5;
+}
+
+.btn:hover {
+    background-color: #2967c4;
+}

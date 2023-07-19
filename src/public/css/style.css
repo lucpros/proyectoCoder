@@ -66,16 +66,23 @@ h3 {
     text-align: center;
 }
 
-input {
+input, select {
+    margin-top: 5px;
     padding: 10px 7px;
     border-radius: 2px;
     outline: none;
-    border: none;
+    border: 1px solid #fff;
+    background-color: #fff;
     color: #242222;
 }
 
-input:focus {
+select {
+    cursor: pointer;
+}
+
+input:focus, select:focus {
     background-color: #c8cfda;
+    border: 1px solid #2967c4;
 }
 
 .btn {

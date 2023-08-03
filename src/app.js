@@ -20,7 +20,7 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', './views')
 app.set('view engine', 'handlebars')
 
-const MONGODB_CONNECT = 'mongodb+srv://gordon_free3:GreciasenEgal789@cluster0.nfgcx.gcp.mongodb.net/db_coder?retryWrites=true&w=majority'
+const MONGODB_CONNECT = 'mongodb+srv://gordon_free3:GreciasenEgal789@cluster0.nfgcx.gcp.mongodb.net/ecommerce?retryWrites=true&w=majority'
 mongoose.connect(MONGODB_CONNECT)
 .then(()=>console.log('conexion DB'))
 .catch((error) => console.log(error))

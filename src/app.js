@@ -1,23 +1,32 @@
 const express = require('express')
-const handlebars = require('express-handlebars')
-const socketServer = require('./utils/io')
-const ProductManager = require('./ProductManager')
-
-
 const viewsRouter = require('./routers/viewsRouter')
-
 const productRouter = require('./routers/productRouter');
 const cartRouter = require('./routers/cartRouter')
 
+const productsRouterMongo = require('./routers/productRouterMongo');
+
+const mongoose = require('mongoose')
+const handlebars = require('express-handlebars')
+
+const socketServer = require('./utils/io')
+const ProductManager = require('./ProductManager');
+
+
+
 const app = express()
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', './views')
 app.set('view engine', 'handlebars')
 
+const MONGODB_CONNECT = 'mongodb+srv://gordon_free3:GreciasenEgal789@cluster0.nfgcx.gcp.mongodb.net/db_coder?retryWrites=true&w=majority'
+mongoose.connect(MONGODB_CONNECT)
+.then(()=>console.log('conexion DB'))
+.catch((error) => console.log(error))
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 const PORT = 8080
@@ -29,3 +38,5 @@ const manager = new ProductManager('../product.json', io)
 app.use('/api/products', productRouter(manager))
 app.use('/', viewsRouter)
 app.use('/api/carts', cartRouter)
+
+app.use('/api/productsMongo', productsRouterMongo)

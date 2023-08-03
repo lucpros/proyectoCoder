@@ -4,13 +4,21 @@ body {
     margin: 0;
     padding: 0;
     background-color: #0000001a;
-    font-family: 'Lato', sans-serif;;
+    font-family: 'Lato', sans-serif;
 }
 
 h1 {
     color: #363636;
     margin: 30px auto;
     text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+.homeContainer {
+    padding-bottom: 50px;
 }
 
 table {

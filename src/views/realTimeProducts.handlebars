@@ -75,7 +75,7 @@ productForm.addEventListener('submit', async (event) => {
   };
 
   try {
-    await axios.post('http://localhost:8080/api/products', productData);
+    await axios.post('http://localhost:8080/api/productsFileSystem', productData);
     
     productForm.reset();
   } catch (error) {
@@ -90,7 +90,7 @@ productFormDelete.addEventListener('submit', async (event) => {
   const idProduct = document.querySelector('input[name="id"]').value;
 
   try {
-    await axios.delete(`http://localhost:8080/api/products/${idProduct}`);
+    await axios.delete(`http://localhost:8080/api/productsFileSystem/${idProduct}`);
     
     productFormDelete.reset();
   } catch (error) {

@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-class ProductManager {
+class ProductManagerFileSystem {
     constructor(path, io) {
         this.path = path
         this.io = io
@@ -65,10 +65,12 @@ class ProductManager {
     }
 
     async getProductById(id) {
+      console.log("id de producto en manager producto",id)
       let notProduct = false
 
       try {
         const products = await this.getProducts();
+        console.log(typeof(products))
         const product = products.find((product) => product.id === id);
         if (!product) {
           console.log('No se encuentra producto por ID: ', id);
@@ -148,4 +150,4 @@ class ProductManager {
     }
 }
 
-module.exports = ProductManager;
+module.exports = ProductManagerFileSystem;

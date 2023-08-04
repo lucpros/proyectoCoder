@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const cartsSchema = mongoose.Schema({
     products: [{
-        product: Number,
+        product: String,
         quantity: Number
       }
     ]

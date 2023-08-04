@@ -1,70 +1,53 @@
 const { Router } = require('express')
+const ProductManager = require('../dao/ProductManager')
+const productsRouter = Router()
+const productManager = new ProductManager()
 
-const productRouter = (manager) => {
-    const router = Router();
+productsRouter.get('/', async (req, res) => {
+    const getAllProducts = await productManager.getProducts()
+    return res.json(getAllProducts)
+})
 
-    router.get('/', async (req, res) => {
-        const getAllProducts = await manager.getProducts()
+productsRouter.get('/:pid', async (req, res) => {
+    const productId = req.params.pid
+    const getProductById = await productManager.getProductById(productId)
+    if (!getProductById) {
+        return (`El producto con el ID ${productId} no existe`)
+    }
+    return res.json(getProductById)
+})
 
-        const num = req.query.limit
-        if (!num) {
-            return res.send(getAllProducts)
-        } else {
-            const getLimitProducts = getAllProducts.slice(0, num)
-            return res.send(getLimitProducts)
-        }
-    })
+productsRouter.post('/', async (req, res) => {
+    const data = req.body
 
-    router.get('/:pid', async (req, res) => {
-        const productId = parseInt(req.params.pid)
-
-        const getProductById = await manager.getProductById(productId)
-
-        if (!getProductById) {
-            return res.send({"Error": `El producto con el ID ${productId} no existe`})
-        }
-        return res.send(getProductById)
-    })
-
-    router.post('/', async (req, res) => {
-
-        const data = req.body
-        const { price, stock, ...rest } = data
-        const newData = { price: parseFloat(price), stock: parseInt(stock), ...rest}
-        console.log(newData)
-
-        const postProduct = await manager.addProduct(newData)
-
-        if (!data) {
-            return res.send({"Error": "El producto no ha podido agregarse"})
-        }
-        return res.status(201).json(postProduct)
-    })
-
-    router.put('/:pid', async (req, res) => {
-        const productId = parseInt(req.params.pid) 
-        const data = req.body
-
-        const updateProduct = await manager.updateProduct(productId, data)
-
-        if (!data) {
-            return res.send({"Error": `No se puede actualizar el producto con ID ${productId}`})
-        }
-        return res.json(updateProduct)
-    })
-
-    router.delete('/:pid', async (req, res) => {
-        const productId = parseInt(req.params.pid)
-
-        const deleteProduct = await manager.deleteProduct(productId)
-
-        if (!deleteProduct) {
-            return res.send({"Error": `No se puede eliminar el producto con ID ${productId}`})
-        }
-        return res.status(204).json({})
-    })
+    const postProduct = await productManager.addProduct(data)
     
-    return router
-}
+    if (!data) {
+        return "El producto no ha podido agregarse"
+    }
+    return res.status(201).json(postProduct)
+})
 
-module.exports = productRouter
+productsRouter.put('/:pid', async (req, res) => {
+    const productId = req.params.pid
+    const data = req.body
+    const updateProduct = await productManager.updateProduct(productId, data)
+    if (!data) {
+        return `No se puede actualizar el producto con ID ${productId}`
+    }
+    return res.json(updateProduct)
+})
+
+productsRouter.delete('/:pid', async (req, res) => {
+    const productId = req.params.pid
+    try {
+        const deleteProduct = await productManager.deleteProduct(productId)
+        return res.json(deleteProduct)
+    } catch (e) {
+        return res.status(404).json({
+            message: e.message
+        })
+    }
+})
+
+module.exports = productsRouter

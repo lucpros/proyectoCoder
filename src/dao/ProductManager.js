@@ -6,7 +6,7 @@ class ProductManager {
     }
 
     async getProducts () {
-        try {
+      try {
         const products = this.model.find()
         return products
       } catch (err) {
@@ -15,13 +15,12 @@ class ProductManager {
     }
 
     async getProductById(id) {
-
       try {
         const product = await this.model.findById(id);
         
         if (!product) {
-          console.log('No se encuentra producto por ID: ', id);
-          return 'No se encuentra producto por ID: ', id
+          console.log("entro a no hay producto")
+          return false
         }
 
         console.log('Producto encontrado por ID:', id)
@@ -29,7 +28,7 @@ class ProductManager {
         
       } catch (e) {
         console.log('Error: ', e);
-        return e;
+        return false;
       }
     }
     

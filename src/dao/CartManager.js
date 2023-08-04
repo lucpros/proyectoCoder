@@ -1,7 +1,7 @@
 const cartModel = require('./models/cartModels')
-const ProductManagerMongo = require('./ProductManagerMongo')
+const ProductManager = require('./ProductManager')
 
-const productManagerMongo = new ProductManagerMongo()
+const productManager = new ProductManager()
 
 class CartManager {
     constructor() {
@@ -41,7 +41,7 @@ class CartManager {
             const productId = product.product
             console.log(`Productos encontrados del Cart con ID ${id}: ${productId}`)
   
-            const productDetails = await productManagerMongo.getProductById(productId);
+            const productDetails = await productManager.getProductById(productId);
   
             return { product: productDetails, quantity: product.quantity };
           })
@@ -59,34 +59,30 @@ class CartManager {
 
     async addProductToCart(cartId, productId) {
       try {
-        const carts = await this.getCarts();
-        const cart = carts.find((cart) => cart.id === cartId);
-        const productExist = await managerProducts.getProductById(productId)
-
+        const cart = await this.model.findById(cartId);
+        const productExist = await productManager.getProductById(productId)
+        
         if (!cart) {
           return `No se encuentra cart por ID: ${cartId}`
         }
 
         if (!productExist) {
-          return `No se puede agregar el producto con ID: ${productId}, no existe`
-        }
+          return "No se agrego producto al cart porque no existe"
 
-        const product = cart.products.find((item) => item.product === productId)
-        
-        if(!product) {
+        } else {
+          const product = cart.products.find((item) => item.product === productId)
 
-          cart.products.push({
-            product: productId, 
-            quantity: 1}
+          if(!product) {
+            await this.model.updateOne({ _id: cartId }, { $push: { products: [{product: productId, quantity: 1}] }})
+            return `Producto con ID ${productId} agregado al Cart con ID ${cartId}`
+          }
+
+          await this.model.updateOne(
+            { _id: cartId, 'products.product': productId },
+            { $inc: { 'products.$.quantity': 1 } }
           )
-
-          await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
-          return `Producto con ID ${productId} agregado al Cart con ID ${cartId}`
-        }
-        
-        const productQuantity = product.quantity += 1
-        await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
-        return `Producto con ID ${productId} agregado al Cart con ID ${cartId}, cantidad: ${productQuantity} `
+          return "producto agregado al Cart"
+          }
 
       } catch (e) {
         console.log('Error: ', e);
@@ -94,16 +90,5 @@ class CartManager {
       }
     }
 }
-  
-
-// const manager = new CartManager('../cart.json');
-
-
-// (async () => {
-//   // const managerGetCarts = await manager.getCarts();
-//   // const managerAddCart = await manager.addCart();
-//   const managerGetCartById = await manager.getCartById(1);
-//   //const managerAddProductToCart = await manager.addProductToCart(1, 2);
-// })();
 
 module.exports = CartManager

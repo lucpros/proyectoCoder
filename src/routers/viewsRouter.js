@@ -4,7 +4,7 @@ const viewsRouter = express.Router()
 
 viewsRouter.get('/', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:8080/api/products')
+        const response = await axios.get('http://localhost:8080/api/productsFileSystem')
         const products = response.data
 
         res.render('home', { products })
@@ -16,7 +16,7 @@ viewsRouter.get('/', async (req, res) => {
 
 viewsRouter.get('/realtimeproducts', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:8080/api/products')
+        const response = await axios.get('http://localhost:8080/api/productsFileSystem')
         const products = response.data
 
         res.render('realTimeProducts', { products })

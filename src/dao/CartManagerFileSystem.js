@@ -1,7 +1,7 @@
 const fs = require('fs')
 const ProductManagerFileSystem = require('./ProductManagerFileSystem');
 
-const managerProducts = new ProductManagerFileSystem('../../product.json')
+const managerProducts = new ProductManagerFileSystem('../product.json')
 
 class CartManagerFileSystem {
     constructor(path) {
@@ -43,25 +43,21 @@ class CartManagerFileSystem {
       try {
         const carts = await this.getCarts();
         const cart = carts.find((cart) => cart.id === id);
-        console.log(cart)
+        console.log("clg del cart: ", cart)
 
         if (!cart) {
           console.log('No se encuentra cart por ID: ', id);
           return `No se encuentra cart por ID: ${id}`
         }
 
-        const products = cart.products
-        console.log(products)
-
         const productPromises = cart.products.map( async (product) => {
 
-          const productId = product.product
-          console.log(productId)
-          console.log(`Productos encontrados del Cart con ID: ${id} e ID producto: ${productId}`)
-
-          const productDetails = await managerProducts.getProductById(productId);
-
-          return { product: productDetails, quantity: product.quantity };
+            const productId = product.product
+            console.log(`Productos encontrados del Cart con ID ${id}: ${productId}`)
+  
+            const productDetails = await managerProducts.getProductById(productId);
+  
+            return { product: productDetails, quantity: product.quantity };
         })
 
         const productById = await Promise.all(productPromises);

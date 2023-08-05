@@ -1,0 +1,33 @@
+<div class="homeContainer">
+    <h1>Cart</h1>
+    <h2>Lista de productos del Cart:</h2>
+    {{#if error}}
+        <p>{{ error }}</p>
+    {{else}}
+        <table>
+            <tr>
+              <th>Titulo</th>
+              <th>Descripcion</th>
+              <th>Precio</th>
+              <th>Codigo</th>
+              <th>stock</th>
+              <th>status</th>
+              <th>category</th>
+              <th>Cantidad de pedidos</th>
+            </tr>
+            {{#each cart}}
+                <tr>
+                  <td>{{this.product.title}}</td>
+                  <td>{{this.product.description}}</td>
+                  <td>{{this.product.price}}</td>
+                  {{!-- <td>{{this.product.thumbnail}}</td> --}}
+                  <td>{{this.product.code}}</td>
+                  <td>{{this.product.stock}}</td>
+                  <td>{{this.product.status}}</td>
+                  <td>{{this.product.category}}</td>
+                  <td>{{this.quantity}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    {{/if}}
+</div>

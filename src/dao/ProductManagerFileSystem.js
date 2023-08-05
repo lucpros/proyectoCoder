@@ -4,6 +4,7 @@ class ProductManagerFileSystem {
     constructor(path, io) {
         this.path = path
         this.io = io
+        console.log("ESTE ES EL PATH!!!!!: ", path)
     }
 
     async getProducts () {
@@ -66,22 +67,22 @@ class ProductManagerFileSystem {
 
     async getProductById(id) {
       console.log("id de producto en manager producto",id)
-      let notProduct = false
 
       try {
-        const products = await this.getProducts();
-        console.log(typeof(products))
-        const product = products.find((product) => product.id === id);
+        const products = await this.getProducts()
+
+        const product = products.find((product) => product.id === id)
+
         if (!product) {
-          console.log('No se encuentra producto por ID: ', id);
-          return notProduct
+          console.log('No se encuentra producto por ID: ', id)
+          return false
         }
         console.log('Producto encontrado por ID:', id)
         return product
         
       } catch (e) {
-        console.log('Error: ', e);
-        return e;
+        console.log('Error: ', e)
+        return false
       }
     }
 

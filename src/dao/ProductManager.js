@@ -1,13 +1,14 @@
 const productModel = require('./models/productModels')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 class ProductManager {
     constructor() {
         this.model = productModel
     }
 
-    async getProducts () {
+    async getProducts (limit, page) {
       try {
-        const products = this.model.find()
+        const products = await this.model.paginate({ }, { limit: limit, page: page })
         return products
       } catch (err) {
         return `No se encontraron productos, ${err}`;

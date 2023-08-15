@@ -1,0 +1,26 @@
+<div class="homeContainer">
+    <h1>PRODUCTS</h1>
+    <h2>Lista de Productos:</h2>
+    {{#if error}}
+        <p>{{ error }}</p>
+    {{else}}
+        <table>
+            <tr>
+              <th>ID</th>
+              <th>Titulo</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Categoría</th>
+            </tr>
+            {{#each products}}
+                <tr>
+                  <td>{{this.id}}</td>
+                  <td>{{this.title}}</td>
+                  <td>{{this.price}}</td>
+                  <td>{{this.stock}}</td>
+                  <td>{{this.category}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    {{/if}}
+</div>

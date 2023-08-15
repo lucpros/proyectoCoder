@@ -42,15 +42,18 @@ viewsRouter.get('/cartFileSystem/:cid', async (req, res) => {
 })
 
 // MONGODB
-viewsRouter.get('/home', async (req, res) => {
+viewsRouter.get('/products', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:8080/api/products')
+        const limit = req.query.limit || 3
+        const page = req.query.limit || 1
+        const response = await axios.get(`http://localhost:8080/api/products?limit=${limit}page=${page}`)
         const products = response.data
+        //products.docs = products.docs.map(product => product.toObject())
 
-        res.render('home', { products })
+        res.render('products', { products })
     } catch (error) {
         console.log(error)
-        res.render('home', { error: 'Error al obtener los productos'})
+        res.render('products', { error: 'Error al obtener los productos'})
     }
 })
 

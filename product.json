@@ -102,16 +102,5 @@
     "stock": 8,
     "id": 10,
     "category": "tech"
-  },
-  {
-    "title": "Campera",
-    "description": "Campera mujer ASIA",
-    "price": 25000,
-    "thumbnail": "./camara.png",
-    "code": "4SADF68A",
-    "stock": 2,
-    "status": true,
-    "category": "clothes",
-    "id": 11
   }
 ]

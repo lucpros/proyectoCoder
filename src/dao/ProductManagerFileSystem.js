@@ -4,7 +4,6 @@ class ProductManagerFileSystem {
     constructor(path, io) {
         this.path = path
         this.io = io
-        console.log("ESTE ES EL PATH!!!!!: ", path)
     }
 
     async getProducts () {

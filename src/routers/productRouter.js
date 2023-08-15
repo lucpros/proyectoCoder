@@ -4,8 +4,14 @@ const productsRouter = Router()
 const productManager = new ProductManager()
 
 productsRouter.get('/', async (req, res) => {
-    const getAllProducts = await productManager.getProducts()
-    return res.json(getAllProducts)
+    try {
+        const limit = parseInt(req.query.limit) || 3
+        const page = parseInt(req.query.page) || 1
+        const getAllProducts = await productManager.getProducts(limit, page)
+        return res.json(getAllProducts)
+    } catch(error) {
+        return res.json("Error", error)
+    }
 })
 
 productsRouter.get('/:pid', async (req, res) => {

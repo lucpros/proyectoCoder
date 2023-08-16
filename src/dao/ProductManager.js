@@ -6,9 +6,11 @@ class ProductManager {
         this.model = productModel
     }
 
-    async getProducts (limit, page) {
+    async getProducts (filter, params) {
       try {
-        const products = await this.model.paginate({ }, { limit: limit, page: page })
+
+        const products = await this.model.paginate(filter, params)
+
         return products
       } catch (err) {
         return `No se encontraron productos, ${err}`;

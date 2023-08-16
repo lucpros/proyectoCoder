@@ -44,9 +44,13 @@ viewsRouter.get('/cartFileSystem/:cid', async (req, res) => {
 // MONGODB
 viewsRouter.get('/products', async (req, res) => {
     try {
-        const limit = req.query.limit || 3
-        const page = req.query.limit || 1
-        const response = await axios.get(`http://localhost:8080/api/products?limit=${limit}page=${page}`)
+        const limit = req.query.limit
+        const page = req.query.limit
+        const category = req.query.category
+        const status = req.query.status
+        
+        const response = await axios.get(
+            `http://localhost:8080/api/products?limit=${limit}page=${page}category=${category}status=${status}`)
         const products = response.data
         //products.docs = products.docs.map(product => product.toObject())
 

@@ -7,7 +7,26 @@ productsRouter.get('/', async (req, res) => {
     try {
         const limit = parseInt(req.query.limit) || 3
         const page = parseInt(req.query.page) || 1
-        const getAllProducts = await productManager.getProducts(limit, page)
+        const category = req.query.category || null
+        const status = req.query.status || null
+        // const sort = parseInt(req.params.sort) || null
+
+        const params = { limit, page}
+        let filter = {}
+
+        if(status !== null) {
+            filter.status = status
+        }
+
+        if(category !== null) {
+            filter.category = category
+        }
+
+        // if(sort !== null) {
+        //     params.sort = { price: -1}
+        // }
+
+        const getAllProducts = await productManager.getProducts(filter, params)
         return res.json(getAllProducts)
     } catch(error) {
         return res.json("Error", error)

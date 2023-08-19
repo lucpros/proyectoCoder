@@ -12,9 +12,9 @@
               <th>Stock</th>
               <th>Categoría</th>
             </tr>
-            {{#each products}}
+            {{#each products.docs}}
                 <tr>
-                  <td>{{this.id}}</td>
+                  <td>{{this._id}}</td>
                   <td>{{this.title}}</td>
                   <td>{{this.price}}</td>
                   <td>{{this.stock}}</td>

@@ -5,11 +5,11 @@ const productManager = new ProductManager()
 
 productsRouter.get('/', async (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 3
+        const limit = parseInt(req.query.limit) || 5
         const page = parseInt(req.query.page) || 1
         const category = req.query.category || null
         const status = req.query.status || null
-        // const sort = parseInt(req.params.sort) || null
+        const sort = parseInt(req.query.sort) || null
 
         const params = { limit, page}
         let filter = {}
@@ -22,9 +22,9 @@ productsRouter.get('/', async (req, res) => {
             filter.category = category
         }
 
-        // if(sort !== null) {
-        //     params.sort = { price: -1}
-        // }
+        if(sort !== null) {
+            params.sort = { price: sort}
+        }
 
         const getAllProducts = await productManager.getProducts(filter, params)
         return res.json(getAllProducts)

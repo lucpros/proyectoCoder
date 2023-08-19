@@ -45,14 +45,26 @@ viewsRouter.get('/cartFileSystem/:cid', async (req, res) => {
 viewsRouter.get('/products', async (req, res) => {
     try {
         const limit = req.query.limit
-        const page = req.query.limit
-        const category = req.query.category
-        const status = req.query.status
+        const page = req.query.page
+        const category = req.query.category || null
+        const status = req.query.status || null
+        const sort = req.query.sort
+
+        let url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&sort=${sort}`
         
-        const response = await axios.get(
-            `http://localhost:8080/api/products?limit=${limit}page=${page}category=${category}status=${status}`)
+        if (category) {
+            url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&category=${category}&sort=${sort}`
+        }
+        if (status !== null) {
+            url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&status=${status}&sort=${sort}`
+        }
+        if (category & status) {
+            url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&category=${category}&status=${status}&sort=${sort}`
+        }
+
+        const response = await axios.get(url)
+
         const products = response.data
-        //products.docs = products.docs.map(product => product.toObject())
 
         res.render('products', { products })
     } catch (error) {

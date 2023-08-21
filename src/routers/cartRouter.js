@@ -61,8 +61,7 @@ cartRouter.put('/:cid', async (req, res) => {
     try {
         const cartId = req.params.cid
         const data = req.body
-    
-        const updateCart = await cartManager.updateCart(cartId)
+        const updateCart = await cartManager.updateCart(cartId, data)
         if (!data) {
             return `No se puede actualizar el cart con ID ${cartId}`
         }

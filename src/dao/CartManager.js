@@ -130,7 +130,7 @@ class CartManager {
       }
     }
 
-    async updatecart (id, data) {
+    async updateCart (id, data) {
       try {
         const cart = await this.getCartById(id)
 
@@ -141,13 +141,7 @@ class CartManager {
 
         const cartUpdated = {
           _id: cart._id,
-          products: [
-            {
-              product: data.products.product,
-              quantity: data.products.quantity,
-              _id: data.products._id
-            }
-          ]
+          products: data.products
         }
 
         await this.model.updateOne({ _id: id}, cartUpdated)
@@ -160,13 +154,23 @@ class CartManager {
       }
     }
 
-    async updateQuantityProducts (cartId, productsId, data) {
+    async updateQuantityProducts (cartId, data) {
       try {
         const cart = await this.getCartById(cartId)
+        console.log(data)
 
         if (!cart) {
           console.log('No se encuentra cart a actualizar con ID:', id)
           return `No se encuentra cart a actualizar con ID: ${id}`
+        }
+
+        const productToUpdate = cart.products.find(
+          (product) => product.product === data.products[0].product
+        )
+
+        if (!productToUpdate) {
+          console.log('No se encuentra el producto en el carrito');
+          return 'No se encuentra el producto en el carrito';
         }
 
         const quantityUpdated = {

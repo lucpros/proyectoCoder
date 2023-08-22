@@ -1,5 +1,6 @@
 const cartModel = require('./models/cartModels')
 const ProductManager = require('./ProductManager')
+const producSchema = require('./models/productModels')
 
 const productManager = new ProductManager()
 
@@ -49,6 +50,7 @@ class CartManager {
           const productById = await Promise.all(productPromises);
   
           const cartJson = JSON.stringify(productById)
+        
           return cartJson
   
         } catch (e) {

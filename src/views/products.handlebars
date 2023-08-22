@@ -25,12 +25,14 @@
     {{/if}}
 </div>
 
-<h4>Pagina: {{products.page}} de {{products.totalPages}}</h4>
-
-{{#if products.hasPrevPage }}
-  <a href="/products?page={{products.prevPage}}">Página previa</a>
-{{/if}}
-
-{{#if products.hasNextPage }}
-  <a href="/products?page={{products.nextPage}}">Página siguiente</a>
-{{/if}}
+<div class="paginateContainer">
+  <h4>Pagina: {{products.page}} de {{products.totalPages}}</h4>
+  <div class="prevNextPageContainer">
+    {{#if products.hasPrevPage }}
+      <a href="/products?page={{products.prevPage}}">Página previa</a>
+    {{/if}}
+    {{#if products.hasNextPage }}
+      <a href="/products?page={{products.nextPage}}">Página siguiente</a>
+    {{/if}}
+  </div>
+</div>

@@ -17,15 +17,17 @@
     </tr>
   {{/each}}
 </table>
-<h4>Pagina: {{products.page}} de {{products.totalPages}}</h4>
-
-{{#if products.hasPrevPage }}
-  <a href="/realtimeproducts?page={{products.prevPage}}">Página previa</a>
-{{/if}}
-
-{{#if products.hasNextPage }}
-  <a href="/realtimeproducts?page={{products.nextPage}}">Página siguiente</a>
-{{/if}}
+<div class="paginateContainer">
+  <h4>Pagina: {{products.page}} de {{products.totalPages}}</h4>
+  <div class="prevNextPageContainer">
+    {{#if products.hasPrevPage }}
+      <a href="/realtimeproducts?page={{products.prevPage}}">Página previa</a>
+    {{/if}}
+    {{#if products.hasNextPage }}
+      <a href="/realtimeproducts?page={{products.nextPage}}">Página siguiente</a>
+    {{/if}}
+  </div>
+</div>
 <div class="formsContainer">
   <form id="productForm">
       <h3>AGREGAR PRODUCTO</h3>

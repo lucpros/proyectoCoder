@@ -7,7 +7,7 @@
     <th>Stock</th>
     <th>Categoría</th>
   </tr>
-  {{#each products}}
+  {{#each products.docs}}
     <tr rowId="{{this._id}}">
       <td>{{this._id}}</td>
       <td>{{this.title}}</td>
@@ -17,6 +17,15 @@
     </tr>
   {{/each}}
 </table>
+<h4>Pagina: {{products.page}} de {{products.totalPages}}</h4>
+
+{{#if products.hasPrevPage }}
+  <a href="/realtimeproducts?page={{products.prevPage}}">Página previa</a>
+{{/if}}
+
+{{#if products.hasNextPage }}
+  <a href="/realtimeproducts?page={{products.nextPage}}">Página siguiente</a>
+{{/if}}
 <div class="formsContainer">
   <form id="productForm">
       <h3>AGREGAR PRODUCTO</h3>

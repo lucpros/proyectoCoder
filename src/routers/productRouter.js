@@ -33,6 +33,36 @@ productsRouter.get('/', async (req, res) => {
     }
 })
 
+productsRouter.get('/realtimeproducts', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 7
+        const page = parseInt(req.query.page) || 1
+        const category = req.query.category || null
+        const status = req.query.status || null
+        const sort = parseInt(req.query.sort) || null
+
+        const params = { limit, page}
+        let filter = {}
+
+        if(status !== null) {
+            filter.status = status
+        }
+
+        if(category !== null) {
+            filter.category = category
+        }
+
+        if(sort !== null) {
+            params.sort = { price: sort}
+        }
+
+        const getAllProducts = await productManager.getProducts(filter, params)
+        return res.json(getAllProducts)
+    } catch(error) {
+        return res.json("Error", error)
+    }
+})
+
 productsRouter.get('/:pid', async (req, res) => {
     const productId = req.params.pid
     const getProductById = await productManager.getProductById(productId)

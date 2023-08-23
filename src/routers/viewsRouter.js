@@ -131,4 +131,14 @@ viewsRouter.get('/cart/:cid', async (req, res) => {
     }
 })
 
+// LOGIN - REGISTER
+viewsRouter.get('/register', (req, res) => {
+  return res.render('register')
+})
+
+viewsRouter.get('/login', (req, res) => {
+  return res.render('login')
+})
+
+
 module.exports = viewsRouter

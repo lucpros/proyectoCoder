@@ -1,0 +1,42 @@
+<h2>Registro</h2>
+
+<form id="registerForm">
+  Nombre: <input type="text" name="name"><br><br>
+  Apellido: <input type="text" name="lastname"><br><br>
+  Email: <input type="text" name="email"><br><br>
+  Edad: <input type="text" name="age"><br><br>
+  Contraseña: <input type="password" name="password"><br><br>
+
+  <input type="submit" value="Registrar">
+
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const registerForm = document.getElementById('registerForm');
+registerForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const name = document.querySelector('input[name="name"]').value;
+  const lastname = document.querySelector('input[name="lastname"]').value;
+  const email = document.querySelector('input[name="email"]').value;
+  const age = document.querySelector('input[name="age"]').value;
+  const password = document.querySelector('input[name="password"]').value;
+
+  const userData = {
+    name,
+    lastname,
+    email,
+    age,
+    password
+  };
+
+  try {
+    await axios.post('http://localhost:8080/api/session/register', userData);
+    
+    registerForm.reset();
+  } catch (error) {
+    console.error(error);
+  }
+});
+</script>

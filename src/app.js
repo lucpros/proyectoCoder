@@ -9,6 +9,7 @@ const cartFileSystemRouter = require('./routers/cartFileSystemRouter')
 // MongoDB
 const productsRouter = require('./routers/productRouter');
 const cartRouter = require('./routers/cartRouter');
+const sessionRouter = require('./routers/sessionRouter');
 // --
 
 const mongoose = require('mongoose')
@@ -46,3 +47,4 @@ app.use('/api/cartsFileSystem', cartFileSystemRouter)
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
+app.use('/api/session', sessionRouter)

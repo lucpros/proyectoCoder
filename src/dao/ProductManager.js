@@ -1,5 +1,4 @@
 const productModel = require('./models/productModels')
-const mongoosePaginate = require('mongoose-paginate-v2')
 
 class ProductManager {
     constructor() {

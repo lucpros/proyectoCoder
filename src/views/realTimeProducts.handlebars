@@ -3,17 +3,23 @@
   <tr class="headers">
     <th>ID</th>
     <th>Nombre</th>
+    <th>Descripcion</th>
     <th>Precio</th>
     <th>Stock</th>
     <th>Categoría</th>
+    <th>Status</th>
+    <th>Code</th>
   </tr>
   {{#each products.docs}}
     <tr rowId="{{this._id}}">
       <td>{{this._id}}</td>
       <td>{{this.title}}</td>
+      <td>{{this.description}}</td>
       <td>{{this.price}}</td>
       <td>{{this.stock}}</td>
       <td>{{this.category}}</td>
+      <td>{{this.status}}</td>
+      <td>{{this.code}}</td>
     </tr>
   {{/each}}
 </table>
@@ -53,6 +59,25 @@
       <label for="id" >INGRESAR ID DE PRODUCTO A ELIMINAR:</label><input type="text" name="id">
       <input class="btn" type="submit" value="Enviar">
   </form>
+  <form id="productFormEdit">
+      <h3>EDITAR PRODUCTO</h3>
+      <label for="idEdit" >INGRESAR ID DE PRODUCTO A EDITAR:</label><input type="text" name="idEdit">
+      <label for="titleEdit" >Title:</label><input type="text" name="titleEdit"><br>
+      <label for="descriptionEdit" >Description:</label><input type="text" name="descriptionEdit"><br>
+      <label for="thumbnailEdit" >Thumbnail:</label><input type="text" name="thumbnailEdit"><br>
+      <label for="priceEdit" >Price:</label><input type="number" name="priceEdit"><br>
+      <label for="codeEdit" >Code:</label><input type="text" name="codeEdit"><br>
+      <label for="stockEdit" >Stock:</label><input type="number" name="stockEdit"><br>
+  
+      <label for="statusEdit" >Status:</label>
+      <select name="statusEdit" id="statusEdit">
+        <option value="false">False</option>
+        <option value="true">True</option>
+      </select><br>
+  
+      <label for="categoryEdit" >Category:</label><input type="text" name="categoryEdit"><br>
+      <input class="btn" type="submit" value="Enviar">
+  </form>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -69,7 +94,6 @@ productForm.addEventListener('submit', async (event) => {
   const description = document.querySelector('input[name="description"]').value;
   const thumbnail = document.querySelector('input[name="thumbnail"]').value;
   const price = document.querySelector('input[name="price"]').value;
-  const code = document.querySelector('input[name="code"]').value;
   const stock = document.querySelector('input[name="stock"]').value;
   const status = document.querySelector('select[name="status"]').value;
   const category = document.querySelector('input[name="category"]').value;
@@ -99,6 +123,7 @@ productFormDelete.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   const idProduct = document.querySelector('input[name="id"]').value;
+  console.log(idProduct)
 
   try {
     await axios.delete(`http://localhost:8080/api/products/${idProduct}`);
@@ -106,6 +131,44 @@ productFormDelete.addEventListener('submit', async (event) => {
     productFormDelete.reset();
   } catch (error) {
     console.error(error);
+  }
+});
+
+const productFormEdit = document.getElementById('productFormEdit');
+productFormEdit.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const idProduct = document.querySelector('input[name="idEdit"]').value;
+  console.log(idProduct)
+
+  const title = document.querySelector('input[name="titleEdit"]').value;
+  const description = document.querySelector('input[name="descriptionEdit"]').value;
+  const thumbnail = document.querySelector('input[name="thumbnailEdit"]').value;
+  const price = document.querySelector('input[name="priceEdit"]').value;
+  const code = document.querySelector('input[name="codeEdit"]').value;
+  const stock = document.querySelector('input[name="stockEdit"]').value;
+  const status = document.querySelector('select[name="statusEdit"]').value;
+  const category = document.querySelector('input[name="categoryEdit"]').value;
+
+  const productUpdated = {
+    title,
+    description,
+    thumbnail,
+    price,
+    code,
+    stock,
+    status,
+    category
+  }
+
+  console.log(productUpdated)
+
+  try {
+    await axios.put(`http://localhost:8080/api/products/${idProduct}`, productUpdated);
+    
+    productFormEdit.reset();
+  } catch (error) {
+    console.log(error);
   }
 });
 </script>

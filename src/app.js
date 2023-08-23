@@ -1,26 +1,16 @@
 const express = require('express')
 const viewsRouter = require('./routers/viewsRouter')
 
-// File System
-const productFileSystemRouter = require('./routers/productFileSystemRouter');
-const cartFileSystemRouter = require('./routers/cartFileSystemRouter')
-// --
-
-// MongoDB
-const productsRouter = require('./routers/productRouter');
-const cartRouter = require('./routers/cartRouter');
-const sessionRouter = require('./routers/sessionRouter');
-// --
+const productsRouter = require('./routers/productRouter')
+const cartRouter = require('./routers/cartRouter')
+const sessionRouter = require('./routers/sessionRouter')
 
 const mongoose = require('mongoose')
 const handlebars = require('express-handlebars')
 
 const socketServer = require('./utils/io')
-const ProductManagerFileSystem = require('./dao/ProductManagerFileSystem');
-
 
 const app = express()
-
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', './views')
@@ -39,11 +29,8 @@ const PORT = 8080
 const httpServer = app.listen(PORT, () => console.log(`Servidor Express escuchando en el puerto: ${PORT}`))
 
 const io = socketServer(httpServer)
-const productManagerFileSystem = new ProductManagerFileSystem('../product.json', io)
 
-app.use('/api/productsFileSystem', productFileSystemRouter(productManagerFileSystem))
 app.use('/', viewsRouter)
-app.use('/api/cartsFileSystem', cartFileSystemRouter)
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)

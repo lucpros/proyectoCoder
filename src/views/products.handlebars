@@ -6,19 +6,21 @@
     {{else}}
         <table>
             <tr>
-              <th>ID</th>
               <th>Titulo</th>
               <th>Precio</th>
               <th>Stock</th>
               <th>Categoría</th>
+              <th></th>
             </tr>
             {{#each products.docs}}
                 <tr>
-                  <td>{{this._id}}</td>
                   <td>{{this.title}}</td>
                   <td>{{this.price}}</td>
                   <td>{{this.stock}}</td>
                   <td>{{this.category}}</td>
+                  <td>
+                      <button onclick="addTocart('{{this._id}}')">Add To Cart</button>
+                  </td>
                 </tr>
             {{/each}}
         </table>
@@ -36,3 +38,14 @@
     {{/if}}
   </div>
 </div>
+
+<script>
+const addTocart = (productId) => {
+  console.log(productId)
+  //try {
+  //  await axios.post(`http://localhost:8080/api/carts/${cartId}/product/${productId}`);
+  //} catch (error) {
+  //  console.error(error);
+  //}
+}
+</script>

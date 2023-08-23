@@ -22,7 +22,7 @@ class ProductManager {
         
         if (!product) {
           console.log(`No hay producto con ID: ${id}`)
-          return false
+          return `No hay producto con ID: ${id}`
         }
 
         console.log('Producto encontrado por ID:', id)
@@ -30,7 +30,7 @@ class ProductManager {
         
       } catch (e) {
         console.log('Error: ', e);
-        return false;
+        return `Error al obtener producto con ID: ${id}`;
       }
     }
     

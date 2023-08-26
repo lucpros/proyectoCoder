@@ -19,7 +19,7 @@
                   <td>{{this.stock}}</td>
                   <td>{{this.category}}</td>
                   <td>
-                      <button onclick="addTocart('{{this._id}}')">Add To Cart</button>
+                      <button onclick="addToCart('{{this._id}}')">Add To Cart</button>
                   </td>
                 </tr>
             {{/each}}
@@ -39,13 +39,17 @@
   </div>
 </div>
 
+<a href="/cart/64ea4f4893207f61409583a8">Ir al CART</a>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-const addTocart = (productId) => {
+const addToCart = async (productId) => {
   console.log(productId)
-  //try {
-  //  await axios.post(`http://localhost:8080/api/carts/${cartId}/product/${productId}`);
-  //} catch (error) {
-  //  console.error(error);
-  //}
+  const cartId = '64ea4f4893207f61409583a8'
+  try {
+    await axios.post(`http://localhost:8080/api/carts/${cartId}/product/${productId}`);
+  } catch (error) {
+    console.error(error);
+  }
 }
 </script>

@@ -1,14 +1,17 @@
 const express = require('express')
-const viewsRouter = require('./routers/viewsRouter')
+const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
+const handlebars = require('express-handlebars')
+const socketServer = require('./utils/io')
 
+const viewsRouter = require('./routers/viewsRouter')
 const productsRouter = require('./routers/productRouter')
 const cartRouter = require('./routers/cartRouter')
 const sessionRouter = require('./routers/sessionRouter')
 
-const mongoose = require('mongoose')
-const handlebars = require('express-handlebars')
 
-const socketServer = require('./utils/io')
 
 const app = express()
 
@@ -24,6 +27,17 @@ mongoose.connect(MONGODB_CONNECT)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
+app.use(cookieParser('secretkey'))
+
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: MONGODB_CONNECT,
+        tlt: 15
+    }),
+    secret: 'secretSessoin',
+    resave: true,
+    saveUninitialized: true
+}))
 
 const PORT = 8080
 const httpServer = app.listen(PORT, () => console.log(`Servidor Express escuchando en el puerto: ${PORT}`))
@@ -31,7 +45,6 @@ const httpServer = app.listen(PORT, () => console.log(`Servidor Express escuchan
 const io = socketServer(httpServer)
 
 app.use('/', viewsRouter)
-
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
 app.use('/api/session', sessionRouter)

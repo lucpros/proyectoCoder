@@ -11,15 +11,17 @@ sessionRouter.post('/register', async (req, res) => {
   try {
     const user = await userModel.create(req.body)
     console.log(user)
+    console.log(res.redirect('/login'))
     return res.redirect('/login')
 
   } catch(error) {
+    console.log(error)
     return error
   }
 })
 
 sessionRouter.post('/login', async (req, res) => {
-  let user = await userModel.findOne({ email: req.body. email })
+  let user = await userModel.findOne({ email: req.body.email })
 
   if (!user) {
     return res.status(401).json({
@@ -37,8 +39,9 @@ sessionRouter.post('/login', async (req, res) => {
 
   delete user.password
 
+  req.session.user = user
+
   console.log("login", user)
-  
   return res.redirect('/products')
 })
 

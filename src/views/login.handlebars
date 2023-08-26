@@ -7,6 +7,8 @@
   <input type="submit" value="Iniciar sesión">
 
 </form>
+<p>Si no tiene una cuenta:</p>
+<a href="/register">Registrarse</a>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -26,6 +28,7 @@ loginForm.addEventListener('submit', async (event) => {
     const response = await axios.post('http://localhost:8080/api/session/login', userData);
     alert("Inicio de sesion exitoso")
     loginForm.reset();
+    window.location.href = '/products'
   } catch (error) {
     alert("ERROR")
     console.error(error);

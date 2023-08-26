@@ -2,82 +2,71 @@ const express = require('express')
 const axios = require('axios')
 const viewsRouter = express.Router()
 
-// FILE SYSTEM
-viewsRouter.get('/homeFileSystem', async (req, res) => {
-    try {
-        const response = await axios.get('http://localhost:8080/api/productsFileSystem')
-        const products = response.data
+const sessionMiddleware = (req, res, next) => {
+    if (req.session.user) {
+        return res.redirect('/products')
+    }
 
-        res.render('home', { products })
+    return next()
+}
+
+viewsRouter.get('/register', sessionMiddleware, (req, res) => {
+    try {
+      console.log("Llego a REGISTER")
+      return res.render('register')
     } catch (error) {
-        console.log(error)
-        res.render('home', { error: 'Error al obtener los productos'})
+      return error
     }
 })
-
-viewsRouter.get('/realtimeproductsFileSystem', async (req, res) => {
-    try {
-        const response = await axios.get('http://localhost:8080/api/productsFileSystem')
-        const products = response.data
-
-        res.render('realTimeProducts', { products })
-    } catch (error) {
-        console.log(error)
-        res.render('realTimeProducts', { error: 'Error al obtener los productos'})
-    }
+  
+viewsRouter.get('/login', sessionMiddleware, (req, res) => {
+  try {
+    console.log("Llego a LOGIN")
+    return res.render('login')
+  } catch (error) {
+    return error
+  }
 })
 
-viewsRouter.get('/cartFileSystem/:cid', async (req, res) => {
-    try {
-        const cartId = req.params.cid
-        const response = await axios.get(`http://localhost:8080/api/cartsFileSystem/${cartId}`)
-        const cart = response.data
-        console.log(cart)
+viewsRouter.get('/products', (req, res, next) => {
+        if (!req.session.user) {
+            return res.redirect('/login')
+        }
 
-        res.render('carts', { cart })
-    } catch (error) {
-        console.log(error)
-        res.render('carts', { error: 'Error al obtener los productos'})
-    }
-})
+        return next()
+        }, async (req, res) => {
 
-// MONGODB
-viewsRouter.get('/products', async (req, res) => {
-    try {
-        const limit = req.query.limit
-        const page = req.query.page
-        const category = req.query.category || null
-        const status = req.query.status || null
-        const sort = req.query.sort
-
-        let url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&sort=${sort}`
+            const limit = req.query.limit
+            const page = req.query.page
+            const category = req.query.category || null
+            const status = req.query.status || null
+            const sort = req.query.sort
+    
+            let url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&sort=${sort}`
+            
+            if (category) {
+                url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&category=${category}&sort=${sort}`
+            }
+            if (status !== null) {
+                url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&status=${status}&sort=${sort}`
+            }
+            if (category & status) {
+                url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&category=${category}&status=${status}&sort=${sort}`
+            }
+    
+            const response = await axios.get(url)
+    
+            const products = response.data
+    
+            const pageNumber = page !== undefined ? parseInt(page) : 1
+    
+            if (isNaN(pageNumber) || pageNumber < 1 || pageNumber > products.totalPages) {
+                const message = "El numero de pagina no es valido"
+                return res.render('errorView', { message })
+            }
+    
+            res.render('products', { products })
         
-        if (category) {
-            url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&category=${category}&sort=${sort}`
-        }
-        if (status !== null) {
-            url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&status=${status}&sort=${sort}`
-        }
-        if (category & status) {
-            url = `http://localhost:8080/api/products?limit=${limit}&page=${page}&category=${category}&status=${status}&sort=${sort}`
-        }
-
-        const response = await axios.get(url)
-
-        const products = response.data
-
-        const pageNumber = page !== undefined ? parseInt(page) : 1
-
-        if (isNaN(pageNumber) || pageNumber < 1 || pageNumber > products.totalPages) {
-            const message = "El numero de pagina no es valido"
-            return res.render('errorView', { message })
-        }
-
-        res.render('products', { products })
-    } catch (error) {
-        console.log(error)
-        res.render('products', { error: 'Error al obtener los productos'})
-    }
 })
 
 viewsRouter.get('/realtimeproducts', async (req, res) => {
@@ -130,15 +119,5 @@ viewsRouter.get('/cart/:cid', async (req, res) => {
         res.render('carts', { error: 'Error al obtener los productos'})
     }
 })
-
-// LOGIN - REGISTER
-viewsRouter.get('/register', (req, res) => {
-  return res.render('register')
-})
-
-viewsRouter.get('/login', (req, res) => {
-  return res.render('login')
-})
-
 
 module.exports = viewsRouter

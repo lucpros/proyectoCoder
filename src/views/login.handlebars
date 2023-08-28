@@ -1,14 +1,16 @@
 <h2>Login</h2>
 
-<form id="loginForm">
-  Email: <input type="text" name="email"><br><br>
-  Contraseña: <input type="password" name="password"><br><br>
-
-  <input type="submit" value="Iniciar sesión">
-
-</form>
-<p>Si no tiene una cuenta:</p>
-<a href="/register">Registrarse</a>
+<div class="loginContainer">
+  <form id="loginForm">
+    Email: <input type="text" name="email"><br><br>
+    Contraseña: <input type="password" name="password"><br><br>
+    <input class="loginBtn" type="submit" value="Iniciar sesión">
+  </form>
+  <div class="btnRegisterContainer">
+    <p>Si no tiene una cuenta:</p>
+    <a href="/register">Registrarse</a>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>

@@ -113,21 +113,15 @@ class CartManager {
 
           await this.model.updateOne(
             { _id: cartId } ,
-            { $pull: { products: { product: productId}} },
-            (err) => {
-              if (err) {
-                  console.error('Error al eliminar el producto del carrito:', err);
-                  return "Error al eliminar el producto del Cart"
-              } else {
-                console.log('Producto eliminado exitosamente del carrito');
-                return "producto eliminado del Cart"
-              }
-          }
+            { $pull: { products: { product: productId}} }
           )
+
+          console.log('Producto eliminado exitosamente del carrito');
+          return "producto eliminado del Cart"
         }
 
       } catch (e) {
-        console.log('Error: ', e);
+        console.log('Error, no se ha eliminado el producto del cart: ', e);
         return e;
       }
     }

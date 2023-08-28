@@ -9,24 +9,39 @@
               <th>Titulo</th>
               <th>Descripcion</th>
               <th>Precio</th>
-              <th>Codigo</th>
-              <th>stock</th>
               <th>status</th>
               <th>category</th>
               <th>Cantidad de pedidos</th>
+              <th></th>
             </tr>
             {{#each cart}}
                 <tr>
                   <td>{{this.product.title}}</td>
                   <td>{{this.product.description}}</td>
                   <td>{{this.product.price}}</td>
-                  <td>{{this.product.code}}</td>
-                  <td>{{this.product.stock}}</td>
                   <td>{{this.product.status}}</td>
                   <td>{{this.product.category}}</td>
                   <td>{{this.quantity}}</td>
+                  <td>
+                      <button onclick="deleteFromCart('{{this.product._id}}')">Delete</button>
+                  </td>
                 </tr>
             {{/each}}
         </table>
     {{/if}}
+    <div class="btnContainer"><a href="/products">Ir a PRODUCTS</a></div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const deleteFromCart = async (productId) => {
+  const cartId = '64ea4f4893207f61409583a8'
+  console.log("cartId: ", cartId)
+  console.log("productId: ", productId)
+  try {
+    await axios.delete(`http://localhost:8080/api/carts/${cartId}/products/${productId}`);
+  } catch (error) {
+    console.error(error);
+  }
+}
+</script>

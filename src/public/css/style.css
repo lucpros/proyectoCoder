@@ -33,6 +33,31 @@ h2 {
     gap: 50px;
 }
 
+.btnContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+#loginForm {
+    gap: 10px;
+}
+
+.loginBtn {
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.btnRegisterContainer {
+    text-align: center;
+}
+
 table {
     margin: auto;
     table-layout: fixed;

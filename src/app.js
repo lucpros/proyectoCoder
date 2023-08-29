@@ -16,7 +16,7 @@ const sessionRouter = require('./routers/sessionRouter')
 const app = express()
 
 app.engine('handlebars', handlebars.engine())
-app.set('views', './views')
+app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
 const MONGODB_CONNECT = 'mongodb+srv://gordon_free3:GreciasenEgal789@cluster0.nfgcx.gcp.mongodb.net/ecommerce?retryWrites=true&w=majority'

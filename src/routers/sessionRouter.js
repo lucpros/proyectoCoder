@@ -45,4 +45,16 @@ sessionRouter.post('/login', async (req, res) => {
   return res.redirect('/products')
 })
 
+sessionRouter.post('/logout', async (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.log(error)
+      return res.status(500).json({ error: "Error al cerrar sesion" })
+    }
+  })
+
+  console.log("logout")
+  return res.redirect('/login')
+})
+
 module.exports = sessionRouter

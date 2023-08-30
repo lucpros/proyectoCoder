@@ -1,0 +1,22 @@
+Perfil de usuario
+
+<br><br>
+
+Nombre: {{user.name}}<br><br>
+Apellido: {{user.lastname}}<br><br>
+Edad: {{user.age}}<br><br>
+Email: {{user.email}}<br><br>
+
+<button onclick="logout()">Cerrar Sesion</button>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const logout = async () => {
+  console.log("funcion logout")
+  try {
+    await axios.post(`http://localhost:8080/api/session/logout`);
+  } catch (error) {
+    console.error(error);
+  }
+}
+</script>

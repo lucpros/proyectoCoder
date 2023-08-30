@@ -6,13 +6,11 @@ const sessionMiddleware = (req, res, next) => {
     if (req.session.user) {
         return res.redirect('/products')
     }
-
     return next()
 }
 
 viewsRouter.get('/register', sessionMiddleware, (req, res) => {
     try {
-      console.log("Llego a REGISTER")
       return res.render('register')
     } catch (error) {
       return error
@@ -21,11 +19,20 @@ viewsRouter.get('/register', sessionMiddleware, (req, res) => {
   
 viewsRouter.get('/login', sessionMiddleware, (req, res) => {
   try {
-    console.log("Llego a LOGIN")
     return res.render('login')
   } catch (error) {
     return error
   }
+})
+
+viewsRouter.get('/profile', (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login')
+  }
+    return next()
+  }, (req, res) => {
+    const user = req.session.user
+    return res.render('profile', { user })
 })
 
 viewsRouter.get('/products', (req, res, next) => {

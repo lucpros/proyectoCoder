@@ -1,6 +1,7 @@
 const cartModel = require('./models/cartModels')
 const ProductManager = require('./ProductManager')
 const producSchema = require('./models/productModels')
+const mongoose = require('mongoose')
 
 const productManager = new ProductManager()
 
@@ -11,7 +12,7 @@ class CartManager {
 
     async getCarts () {
         try {
-            const carts = this.model.find()
+            const carts = this.model.find().populate('products.product')
             return carts
         } catch (err) {
             return `No se encontro cart, ${err}`
@@ -30,28 +31,14 @@ class CartManager {
 
     async getCartById(id) {
         try {
-          const cart = await this.model.findById(id)
+          const cart = await this.model.findById(id).populate('products.product')
   
           if (!cart) {
             console.log('No se encuentra cart por ID: ', id);
             return `No se encuentra cart por ID: ${id}`
           }
-  
-          const productPromises = cart.products.map( async (product) => {
-  
-            const productId = product.product
-            console.log(`Productos encontrados del Cart con ID ${id}: ${productId}`)
-  
-            const productDetails = await productManager.getProductById(productId);
-  
-            return { product: productDetails, quantity: product.quantity };
-          })
-  
-          const productById = await Promise.all(productPromises);
-  
-          const cartJson = JSON.stringify(productById)
         
-          return cartJson
+          return cart
   
         } catch (e) {
           console.log('Error: ', e);
@@ -94,31 +81,35 @@ class CartManager {
 
     async deleteProductFromCart(cartId, productId) {
       try {
-        const cart = await this.model.findById(cartId);
-        const productExist = await productManager.getProductById(productId)
+        const cart = await this.model.findById(cartId)
+        console.log(cart)
+        // const productExist = await productManager.getProductById(productId)
         
-        if (!cart) {
-          return `No se encuentra cart por ID: ${cartId}`
+        // if (!cart) {
+        //   return `No se encuentra cart por ID: ${cartId}`
+        // }
+
+        // if (!productExist) {
+        //   return "No existe el producto"
+
+        // } else {
+        const productFind = cart.products.find(item => item.product._id.equals(productId));
+        console.log(productFind)
+
+        if(!productFind) {
+          return `El producto con ID ${productId} no se encuentra en el Cart con ID ${cartId}`
         }
 
-        if (!productExist) {
-          return "No existe el producto"
+        const deleteFunction = await this.model.updateOne(
+          { _id: cartId } ,
+          { $pull: { products: { product: productId}} }
+        )
 
-        } else {
-          const product = cart.products.find((item) => item.product === productId)
+        console.log(deleteFunction)
 
-          if(!product) {
-            return `El producto con ID ${productId} no se encuentra en el Cart con ID ${cartId}`
-          }
-
-          await this.model.updateOne(
-            { _id: cartId } ,
-            { $pull: { products: { product: productId}} }
-          )
-
-          console.log('Producto eliminado exitosamente del carrito');
-          return "producto eliminado del Cart"
-        }
+        console.log('Producto eliminado exitosamente del carrito');
+        return "producto eliminado del Cart"
+        //}
 
       } catch (e) {
         console.log('Error, no se ha eliminado el producto del cart: ', e);

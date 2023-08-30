@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 
 const cartsSchema = mongoose.Schema({
     products: [{
-        product: String,
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'products',
+        },
         quantity: Number
       }
     ]

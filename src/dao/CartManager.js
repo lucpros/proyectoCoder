@@ -83,16 +83,7 @@ class CartManager {
       try {
         const cart = await this.model.findById(cartId)
         console.log(cart)
-        // const productExist = await productManager.getProductById(productId)
         
-        // if (!cart) {
-        //   return `No se encuentra cart por ID: ${cartId}`
-        // }
-
-        // if (!productExist) {
-        //   return "No existe el producto"
-
-        // } else {
         const productFind = cart.products.find(item => item.product._id.equals(productId));
         console.log(productFind)
 
@@ -109,7 +100,6 @@ class CartManager {
 
         console.log('Producto eliminado exitosamente del carrito');
         return "producto eliminado del Cart"
-        //}
 
       } catch (e) {
         console.log('Error, no se ha eliminado el producto del cart: ', e);

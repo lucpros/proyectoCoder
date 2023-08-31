@@ -60,16 +60,20 @@ class CartManager {
 
         } else {
           const product = cart.products.find((item) => item.product === productId)
+          console.log(product)
 
           if(!product) {
             await this.model.updateOne({ _id: cartId }, { $push: { products: [{product: productId, quantity: 1}] }})
+            console.log(`Producto con ID ${productId} agregado al Cart con ID ${cartId}`)
             return `Producto con ID ${productId} agregado al Cart con ID ${cartId}`
           }
 
-          await this.model.updateOne(
+          const postMongoose = await this.model.updateOne(
             { _id: cartId, 'products.product': productId },
             { $inc: { 'products.$.quantity': 1 } }
           )
+          console.log(postMongoose)
+          console.log("producto agregado al Cart")
           return "producto agregado al Cart"
           }
 
@@ -81,22 +85,29 @@ class CartManager {
 
     async deleteProductFromCart(cartId, productId) {
       try {
-        const cart = await this.model.findById(cartId)
-        console.log(cart)
-        
-        const productFind = cart.products.find(item => item.product._id.equals(productId));
-        console.log(productFind)
+        const cart = await this.model.findById(cartId).populate('products.product')
+        const productExist = await productManager.getProductById(productId)
 
-        if(!productFind) {
+        if (!cart) {
+          return `No se encuentra cart por ID: ${cartId}`
+        }
+
+        if (!productExist) {
+          return "No se agrego producto al cart porque no existe"
+        }
+        
+        const productInCart = cart.products.find(item => item.product._id.equals(productId));
+
+        if(!productInCart) {
           return `El producto con ID ${productId} no se encuentra en el Cart con ID ${cartId}`
         }
 
-        const deleteFunction = await this.model.updateOne(
-          { _id: cartId } ,
-          { $pull: { products: { product: productId}} }
-        )
+        const productObjectId = productInCart._id
 
-        console.log(deleteFunction)
+        const updatedCart = await this.model.updateOne(
+          { _id: cartId },
+          { $pull: { products: { _id: productObjectId } }},
+        )
 
         console.log('Producto eliminado exitosamente del carrito');
         return "producto eliminado del Cart"
